@@ -7,7 +7,7 @@
 [![Stellar](https://img.shields.io/badge/Stellar-Soroban-%237b2ff7?logo=stellar)](https://developers.stellar.org)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-%233178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](AGENTS.md)
 
 **Rotula** is a WhatsApp-first community savings product inspired by Ajo, Esusu, and other rotating savings circles. It is being built for the way groups already organize: agree on a contribution, keep each other accountable, and take turns receiving the pooled savings.
 
@@ -105,6 +105,7 @@ Open [http://localhost:3000](http://localhost:3000).
 Available checks:
 
 ```bash
+npm run format
 npm run lint
 npm run typecheck
 npm test
