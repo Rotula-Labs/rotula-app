@@ -1,63 +1,67 @@
 # Kolo Frontend
 
-This is the official Next.js frontend repository for the Kolo application. The application is built using the Next.js App Router, strict TypeScript, and TailwindCSS, establishing a robust, production-ready foundation for future Stellar wallet, payment, and Soroban integrations.
+**Kolo is building community savings for Stellar, designed for groups that organize through WhatsApp.** This Next.js application is the web companion: a place for members to review savings circles and activity, and for administrators to monitor the platform.
 
-## Tech Stack
+The product is built around familiar community savings practices such as Ajo and Esusu. Stellar is the settlement layer Kolo plans to use for digital wallets, asset transfers, and transparent on-chain savings group operations. Soroban smart contracts are intended to enforce group contribution and payout rules; the backend coordinates those contracts with WhatsApp and the Kolo database.
 
-- **Framework**: Next.js (App Router)
-- **Language**: TypeScript (Strict Mode)
-- **Styling**: TailwindCSS
-- **Code Quality**: ESLint, Prettier
+## Kolo repositories
 
-## Local Setup
+- [Frontend](https://github.com/Stellar-Kolo/kolo-frontend) — this Next.js web companion.
+- [Backend](https://github.com/Stellar-Kolo/kolo-backend) — WhatsApp, account, and Stellar service orchestration.
+- [Soroban contracts](https://github.com/Stellar-Kolo/kolo-contracts) — on-chain savings group rules.
 
-To get started with development locally:
+## What this app contains
 
-1. **Install Dependencies**
-   Make sure you have Node.js installed, then run:
+- Public product pages describing Kolo and its Stellar-based savings model.
+- Member dashboard, savings group, and payment views.
+- Administrative dashboard for reviewing platform activity.
+- Next.js route handlers and service modules that are the integration points for Kolo's backend and Stellar services.
 
-   ```bash
-   npm install
-   ```
+## Current integration status
 
-2. **Run the Development Server**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. The application will auto-update as you edit the files.
+This frontend is under active development. Several member dashboard views use sample data, the browser group service uses local storage for invite prototypes, and the wallet and transaction API routes are placeholders. Login and registration are demo flows. The screens should not be treated as live wallet balances, payment records, or authenticated financial actions.
 
-## Project Structure & Architecture
+The planned Stellar integration is to show wallet and transaction information supplied by Kolo's backend, and to make Soroban-backed group progress and payout status understandable to members. Signing, custody, asset selection, and transaction confirmation belong in the backend and Stellar integration design; the web UI should not imply an action succeeded until the network confirms it.
 
-The application implements a clean, atomic folder architecture separating concerns into specific domain areas:
+## Technology
 
-- `src/app/(auth)/`: Unauthenticated login and registration routes.
-- `src/app/(dashboard)/`: Protected user dashboard, group management, payments, and profile routing.
-- `src/app/api/`: Serverless API handlers, including Stellar wallet integrations and WhatsApp webhooks.
-- `src/components/`: Reusable UI elements, heavily utilizing `index.ts` barrel files. Segmented into `common/`, `dashboard/`, `groups/`, `payments/`, and `layout/`.
-- `src/hooks/`: Custom React hooks for global domain logic (`useAuth`, `useWallet`, etc.).
-- `src/services/`: Isolated API fetch logic, segregating internal endpoints, external Stellar SDK usage, and webhook utilities.
-- `src/context/`: React Context providers for global state management.
-- `src/types/`: Centralized TypeScript interfaces for strict typing across the app.
-- `src/utils/`: Common utilities including formatting helpers and cross-platform validators.
-- `src/middleware.ts`: Next.js middleware handling dynamic route protection for the `/(dashboard)` routes.
+- Next.js App Router and React
+- TypeScript
+- Tailwind CSS
+- Vitest and Testing Library
+- Stellar and Soroban integration surfaces are being developed alongside the backend; this frontend package does not currently provide a complete on-chain client.
 
-## Development Workflow
+## Local development
 
-- **Branching**: Always branch off `main` to create features (`feature/my-feature`).
-- **Committing**: Ensure the code builds properly and all type checks pass before committing.
-- **Validation**:
-  - Run `npm run build` to verify Next.js static rendering and TypeScript compilation.
-  - Run `npm run lint` to catch stylistic and syntax errors.
-  - Run `npm run format` to check Prettier formatting (`npm run format:fix` to auto-fix).
+Requires Node.js and npm.
 
-## Continuous Integration
+```bash
+npm ci
+npm run dev
+```
 
-Every pull request and push to `main` runs the CI workflow defined in `.github/workflows/ci.yml`:
+Open [http://localhost:3000](http://localhost:3000).
 
-- **Lint** — `npm run lint` (ESLint)
-- **Type Check** — `npx tsc --noEmit` (strict TypeScript)
-- **Format Check** — `npm run format` (Prettier)
-- **Build** — `npm run build` (Next.js production build, with `.next/cache` caching)
-- **Test** — runs `npm test` if a test script is defined; otherwise reports a no-op until tests are added
+Available checks:
 
-The `main` branch requires this workflow to pass before a PR can be merged.
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+## Project structure
+
+- `src/app/` — App Router pages and API route handlers.
+- `src/components/` — landing, authentication, dashboard, groups, payments, and admin UI.
+- `src/hooks/` and `src/context/` — client-side state and data access seams.
+- `src/services/` — API, Stellar, Soroban, and WhatsApp integration modules.
+- `src/lib/auth/` — demo session helpers and server-side route guards.
+- `src/types/` — shared application data shapes.
+
+## Contributing
+
+Please open an issue before starting a larger feature. For Stellar-facing work, describe which network interaction is involved, how its result is verified, and what the UI should show while a transaction is pending or fails. Never put secret keys, seed phrases, or credentials in the browser or in the repository.
+
+See [`AGENTS.md`](AGENTS.md) for project-specific instructions. Because this project uses Next.js 16, read the installed framework documentation in `node_modules/next/dist/docs/` before changing application code.
