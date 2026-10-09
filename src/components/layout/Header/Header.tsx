@@ -18,7 +18,7 @@ export const Header = () => {
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-xl font-bold text-gray-900">Kolo</h1>
+        <h1 className="text-xl font-bold text-gray-900">Rotula</h1>
       </div>
       <div className="flex items-center space-x-6">
         <Link
@@ -38,7 +38,11 @@ export const Header = () => {
         <div className="w-8 h-8 rounded-full bg-blue-100 overflow-hidden border border-gray-200">
           <img
             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-            alt="Profile"
+            alt="Your profile"
+            width={32}
+            height={32}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </div>
