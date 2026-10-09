@@ -7,7 +7,13 @@
  */
 
 /** Name of the cookie that holds the (mock) session identifier. */
-export const SESSION_COOKIE = "kolo_session";
+export const SESSION_COOKIE = "rotula_session";
 
 /** Routes that require an authenticated session. */
-export const PROTECTED_PREFIXES = ["/admin", "/dashboard"] as const;
+export const PROTECTED_PREFIXES = [
+  "/admin",
+  "/dashboard",
+  "/groups",
+  "/payments",
+  "/profile",
+] as const;
