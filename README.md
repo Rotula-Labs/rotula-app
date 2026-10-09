@@ -31,7 +31,7 @@ The intended asset for savings flows is USDC on Stellar. The codebase is still a
 - **Clear transaction states:** A submitted transaction is not a completed payment. Kolo's backend integration is designed to simulate and submit Soroban transactions, poll for network confirmation, and reconcile on-chain contribution state with its database.
 - **WhatsApp-first access:** Stellar works beneath the experience. Members should be able to participate through familiar conversational flows without needing to understand the underlying network mechanics.
 
-This is a product and architecture direction, not a claim that the complete flow is deployed. See the [backend integration status](https://github.com/Stellar-Kolo/kolo-backend#current-development-status) and [contract integration notes](https://github.com/Stellar-Kolo/kolo-contracts#deployment-and-integration) for current limitations.
+The contract code has a [Testnet deployment](https://stellar.expert/explorer/testnet/contract/CBQCB6KIXAPDPKGNZFR3KSBBJNEJRFN3MAQL7S46JGFA5I22AUL4OPYL), but no savings group is initialized and the complete product flow is not deployed. See the [backend integration status](https://github.com/Stellar-Kolo/kolo-backend#current-status-and-limitations) and [contract integration notes](https://github.com/Stellar-Kolo/kolo-contracts#integration-with-kolo) for current limitations.
 
 ## Repositories
 
