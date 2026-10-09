@@ -122,7 +122,11 @@ export function SavingsCircles({
                       <img
                         key={idx}
                         src={avatar}
-                        alt="Member"
+                        alt={`${group.name} member ${idx + 1}`}
+                        width={24}
+                        height={24}
+                        loading="lazy"
+                        decoding="async"
                         className="w-6 h-6 rounded-full border-2 border-white object-cover z-20"
                       />
                     ),
