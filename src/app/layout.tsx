@@ -16,9 +16,15 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Kolo — Save Together, Grow Together",
+  title: "Kolo — Community Savings on Stellar",
   description:
-    "Kolo brings the power of community savings (Chamas) to your WhatsApp. Secure, transparent, and built on the Stellar blockchain.",
+    "Kolo is building a WhatsApp-first community savings product on Stellar, with Soroban smart contracts designed for transparent group rules and rotating payouts.",
+  openGraph: {
+    title: "Kolo — Community Savings on Stellar",
+    description:
+      "Ajo, Esusu, and Chama savings circles—coordinated through WhatsApp and being built on Stellar.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

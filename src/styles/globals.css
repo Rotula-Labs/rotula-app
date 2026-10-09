@@ -5,10 +5,23 @@
   --font-display: var(--font-space-grotesk);
 }
 
+:root {
+  color-scheme: light;
+  --kolo-ink: #101a2c;
+  --kolo-paper: #f6f8fc;
+  --kolo-stellar: #4775d1;
+  --kolo-green: #b7ed79;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1.5rem;
+}
+
 body {
   font-family: var(--font-inter, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
-  color: #0f172a;
+  background: var(--kolo-paper);
+  color: var(--kolo-ink);
 }

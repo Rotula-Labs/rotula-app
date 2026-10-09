@@ -1,103 +1,77 @@
-import Link from "next/link";
-
-const imgPhoneMockup =
-  "https://www.figma.com/api/mcp/asset/7150f006-7673-4b89-aea2-6fc0fde956df";
-
 export default function Hero() {
   return (
-    <section
-      className="flex flex-col gap-16 items-center px-4 overflow-hidden pb-0"
-      style={{ background: "#f6f3f5", paddingTop: "160px" }}
-    >
-      {/* Top text block */}
-      <div className="flex flex-col items-center w-full">
-        {/* Badge */}
-        <div className="pb-6">
-          <span
-            className="inline-block px-6 py-2 rounded-full text-[#006c49] text-xs font-medium"
-            style={{
-              background: "#f6f3f5",
-              boxShadow:
-                "inset -4px -4px 8px 0px white, inset 4px 4px 8px 0px #d1d5db",
-            }}
-          >
-            WhatsApp-Native Savings
-          </span>
-        </div>
+    <section className="relative overflow-hidden bg-[#f6f8fc] px-4 pb-20 pt-36 sm:px-6 sm:pb-28 sm:pt-40 lg:px-8 lg:pt-44">
+      <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" style={{ backgroundImage: "linear-gradient(rgba(57, 82, 130, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(57, 82, 130, .055) 1px, transparent 1px)", backgroundSize: "56px 56px", maskImage: "linear-gradient(to bottom, black, transparent 85%)" }} />
+      <div className="pointer-events-none absolute -right-32 top-24 h-[34rem] w-[34rem] rounded-full bg-[#dce9ff] opacity-70 blur-3xl" aria-hidden="true" />
 
-        {/* Headline */}
-        <h1 className="font-display font-bold text-[48px] leading-[1.1] tracking-[-0.02em] text-center">
-          <span className="text-black">Save Together.</span>
-          <br />
-          <span className="text-[#006c49]">Grow Together.</span>
-        </h1>
-
-        {/* Subtitle */}
-        <div className="mt-8 mb-8">
-          <p className="text-[#45464d] text-lg text-center leading-relaxed">
-            Kolo brings the power of community savings (Chamas) to your
-            WhatsApp.
-            <br />
-            Secure, transparent, and built on the Stellar blockchain.
+      <div className="relative mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.02fr_.98fr] lg:gap-10">
+        <div className="max-w-2xl">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#d7e1f4] bg-white/80 px-3.5 py-2 text-xs font-semibold tracking-wide text-[#445a81] shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-[#87c957]" />
+            COMMUNITY SAVINGS, BUILT FOR STELLAR
+          </div>
+          <h1 className="font-display text-[3.2rem] font-semibold leading-[1.02] tracking-[-0.055em] text-[#101a2c] sm:text-6xl lg:text-[4.6rem]">
+            Ajo, Esusu, Chama.
+            <span className="mt-2 block text-[#4775d1]">Together on Stellar.</span>
+          </h1>
+          <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600 sm:text-xl sm:leading-9">
+            Kolo is building a WhatsApp-first way for savings circles to coordinate contributions and take turns—using Stellar for digital asset settlement and Soroban for group rules.
           </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#101a2c] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-[#1d2b45]">
+              See how Kolo is designed <span aria-hidden="true">↓</span>
+            </a>
+            <a href="https://github.com/Stellar-Kolo" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/80 px-6 py-3.5 text-sm font-semibold text-[#101a2c] transition hover:border-slate-400 hover:bg-white">
+              Explore the code <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <p className="mt-5 text-xs leading-5 text-slate-500">Kolo is in active development. Wallet and savings screens are prototypes; no live savings service is offered here.</p>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex gap-6 items-center w-full max-w-[512px]">
-          <Link
-            href="/register"
-            className="flex flex-1 items-center justify-center gap-4 rounded-2xl bg-[#10b981] text-white py-6 px-8 hover:opacity-90 transition-opacity"
-            style={{
-              boxShadow:
-                "-4px -4px 10px 0px rgba(255,255,255,0.8), 4px 4px 10px 0px rgba(0,0,0,0.1)",
-            }}
-          >
-            <div className="font-display font-medium text-2xl text-center leading-tight">
-              <div>Join on</div>
-              <div>WhatsApp</div>
+        <div className="relative mx-auto w-full max-w-[550px] lg:ml-auto" aria-label="Concept illustration of a Kolo savings group and Stellar ledger">
+          <div className="absolute -inset-5 rounded-[2.5rem] bg-gradient-to-br from-[#e4ecff] via-white to-[#e8f5dd] blur-2xl" aria-hidden="true" />
+          <div className="relative rounded-[2rem] border border-white bg-white/90 p-3 shadow-[0_32px_100px_-45px_rgba(22,47,92,.42)] sm:p-5">
+            <div className="rounded-[1.45rem] bg-[#101a2c] p-5 text-white sm:p-7">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[.18em] text-[#adc1e7]">Example circle</p>
+                  <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight">The Sunday Circle</h2>
+                </div>
+                <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-medium text-[#d7e6ff]">Concept UI</span>
+              </div>
+
+              <div className="mt-7 rounded-2xl border border-white/10 bg-white/[.06] p-4 sm:p-5">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-[#bdc9dc]">Cycle contributions</span>
+                  <span className="font-medium text-white">4 of 6 members</span>
+                </div>
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full w-2/3 rounded-full bg-[#b7ed79]" />
+                </div>
+                <div className="mt-5 grid grid-cols-3 gap-2">
+                  {["Ada", "Tunde", "Mina", "Kofi", "You", "Next"].map((name, index) => (
+                    <div key={name} className="flex items-center gap-2 rounded-xl bg-white/[.055] px-2 py-2.5 sm:px-3">
+                      <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${index < 4 ? "bg-[#dff4ce] text-[#365a26]" : "bg-white/10 text-[#b9c7dc]"}`}>
+                        {index < 4 ? "✓" : "·"}
+                      </span>
+                      <span className="truncate text-xs text-[#e1e8f3]">{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-[1fr_auto] items-center gap-4 rounded-2xl bg-[#4775d1] p-4 sm:p-5">
+                <div>
+                  <p className="text-xs font-medium text-blue-100">Designed to settle on Stellar</p>
+                  <p className="mt-1 font-display text-lg font-semibold">Clear rules. Shared record.</p>
+                </div>
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="12" r="8.4"/><path d="M4 9h16M4 15h16M9 4.7l2 14.6m4-14.6-2 14.6"/></svg>
+                </div>
+              </div>
             </div>
-            <svg
-              viewBox="0 0 24 24"
-              className="w-5 h-5 shrink-0"
-              fill="currentColor"
-            >
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM11.997 2C6.48 2 2 6.48 2 12c0 1.76.46 3.41 1.27 4.84L2 22l5.26-1.38A9.97 9.97 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 11.997 2z" />
-            </svg>
-          </Link>
-          <a
-            href="#features"
-            className="flex flex-1 items-center justify-center rounded-2xl py-6 px-8 hover:opacity-90 transition-opacity"
-            style={{
-              background: "#fcf8fa",
-              boxShadow: "-4px -4px 10px 0px white, 4px 4px 10px 0px #d1d5db",
-            }}
-          >
-            <span className="font-display font-medium text-2xl text-[#006c49] text-center">
-              Explore Pools
-            </span>
-          </a>
-        </div>
-      </div>
-
-      {/* Phone mockup card */}
-      <div
-        className="w-full max-w-[896px] rounded-3xl p-2 shrink-0"
-        style={{
-          background: "#fcf8fa",
-          boxShadow: "-8px -8px 16px 0px white, 8px 8px 16px 0px #d1d5db",
-        }}
-      >
-        <div
-          className="rounded-3xl overflow-hidden relative"
-          style={{ height: "550px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imgPhoneMockup}
-            alt="Kolo WhatsApp Interface"
-            className="absolute left-0 w-full max-w-none"
-            style={{ top: "-30%", height: "160%" }}
-          />
+            <p className="px-2 pb-1 pt-4 text-center text-[11px] text-slate-500">Illustrative product concept · not live account or blockchain data</p>
+          </div>
         </div>
       </div>
     </section>

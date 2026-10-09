@@ -1,66 +1,51 @@
 const steps = [
   {
-    number: "1",
-    title: 'Send "Hi"',
+    number: "01",
+    title: "Agree as a circle",
     description:
-      "Message Kolo on WhatsApp to set up your profile and wallet in seconds.",
+      "Members choose the contribution amount, frequency, participants, and payout order together.",
+    label: "The group sets the rules",
   },
   {
-    number: "2",
-    title: "Create a Pool",
+    number: "02",
+    title: "Contribute digitally",
     description:
-      "Invite your group, set a target, and choose your contribution frequency.",
+      "Kolo is designed to coordinate contributions through WhatsApp and settle supported assets through Stellar.",
+    label: "Stellar moves the value",
   },
   {
-    number: "3",
-    title: "Watch it Grow",
+    number: "03",
+    title: "Follow the rotation",
     description:
-      "Track progress, earn rewards, and receive payouts directly to your wallet.",
+      "Soroban contracts can represent the agreed rules and payout order, while the group tracks each cycle together.",
+    label: "Soroban represents the rules",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section
-      id="how-it-works"
-      className="bg-[#f9f8f7] py-24 px-4 sm:px-6 lg:px-8"
-    >
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-            Simple as Sending a Text
-          </h2>
-          <p className="text-slate-500 text-lg">
-            Three steps to financial freedom.
-          </p>
+    <section id="how-it-works" className="bg-[#f6f8fc] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[.2em] text-[#4775d1]">From agreement to shared record</p>
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-[#101a2c] sm:text-5xl">A familiar circle. A clearer flow.</h2>
+          <p className="mt-5 text-base leading-7 text-slate-600 sm:text-lg">Kolo brings the coordination people know together with Stellar’s digital asset rails.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-10 md:gap-8">
-          {steps.map(({ number, title, description }) => (
-            <div
-              key={number}
-              className="flex flex-col items-center text-center"
-            >
-              <div
-                className="w-24 h-24 rounded-full flex items-center justify-center mb-8 text-3xl font-display font-bold text-emerald-600"
-                style={{
-                  background: "#f9f8f7",
-                  boxShadow:
-                    "8px 8px 20px rgba(0,0,0,0.08), -8px -8px 20px rgba(255,255,255,0.9)",
-                }}
-              >
-                {number}
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {steps.map(({ number, title, description, label }, index) => (
+            <article key={number} className="relative rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
+              <div className="flex items-center gap-4">
+                <span className="font-display text-4xl font-semibold tracking-[-.06em] text-[#4775d1]">{number}</span>
+                {index < steps.length - 1 && <div className="hidden h-px flex-1 bg-gradient-to-r from-[#bed0f3] to-transparent md:block" aria-hidden="true" />}
               </div>
-              <div className="w-full h-px bg-slate-200 mb-6 hidden md:block" />
-              <h3 className="font-display font-semibold text-slate-900 text-lg mb-3">
-                {title}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-                {description}
-              </p>
-            </div>
+              <h3 className="mt-8 font-display text-xl font-semibold text-[#101a2c]">{title}</h3>
+              <p className="mt-3 min-h-[72px] text-sm leading-6 text-slate-600">{description}</p>
+              <p className="mt-7 inline-flex rounded-full bg-[#eff4ff] px-3 py-1.5 text-[11px] font-semibold text-[#496ba9]">{label}</p>
+            </article>
           ))}
         </div>
+        <p className="mt-6 text-center text-xs text-slate-500">This describes the intended product flow; the full savings journey is still under development.</p>
       </div>
     </section>
   );

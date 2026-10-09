@@ -1,111 +1,29 @@
-const imgStar =
-  "https://www.figma.com/api/mcp/asset/567fa96a-2d4b-43e4-99c5-562ce1366cd4";
-const imgSarahM =
-  "https://www.figma.com/api/mcp/asset/59eae3b3-5528-4629-934f-c53fd8e7dc38";
-const imgDavidO =
-  "https://www.figma.com/api/mcp/asset/5bbef5c1-f3cc-4385-88bf-1c6fc4fc176e";
-const imgJamesT =
-  "https://www.figma.com/api/mcp/asset/f149408a-13bc-4d77-832c-cdab6e633040";
-
-const testimonials = [
-  {
-    quote:
-      "Kolo transformed how our marketplace chama operates. No more tracking cash or paper ledgers. It's all on WhatsApp!",
-    name: "Sarah M.",
-    role: "Nairobi Market Lead",
-    avatar: imgSarahM,
-  },
-  {
-    quote:
-      "The transparency of the Stellar ledger gives my family peace of mind. We know exactly where our savings are at any time.",
-    name: "David O.",
-    role: "Family Savings Pool",
-    avatar: imgDavidO,
-  },
-  {
-    quote:
-      "Setup took less than 2 minutes. Now I just message the bot every Friday to save my earnings. Highly recommended!",
-    name: "James T.",
-    role: "Freelancer Pool",
-    avatar: imgJamesT,
-  },
+const traditions = [
+  { name: "Ajo", region: "Nigeria", note: "Members contribute on a shared schedule and take turns receiving the pot." },
+  { name: "Esusu", region: "West Africa", note: "A trusted group practice built on consistency, mutual support, and clear agreements." },
+  { name: "Chama", region: "East Africa", note: "People pool their contributions to make shared goals easier to reach." },
 ];
 
 export default function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="py-24 px-10 flex flex-col gap-16 items-start"
-      style={{ background: "#fcf8fa" }}
-    >
-      <div className="max-w-[1200px] w-full mx-auto flex flex-col gap-16 px-4">
-        {/* Header */}
-        <div className="flex flex-col items-center w-full">
-          <p className="text-[#1b1b1d] text-base text-center font-display font-normal leading-6">
-            Trusted by Communities
-          </p>
-          <p className="text-[#45464d] text-base text-center leading-6">
-            Real stories from real savers.
-          </p>
+    <section id="community" className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-[#4775d1]">Many names. One shared idea.</p>
+            <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-[#101a2c] sm:text-5xl">Saving together is already a technology.</h2>
+          </div>
+          <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">Across communities, people have built ways to save through trust, routine, and shared responsibility. Kolo’s ambition is to support those practices with digital coordination and a transparent Stellar record.</p>
         </div>
-
-        {/* Cards */}
-        <div className="flex gap-8 items-start w-full">
-          {testimonials.map(({ quote, name, role, avatar }) => (
-            <div
-              key={name}
-              className="flex-1 flex flex-col items-start rounded-3xl p-8 min-w-0"
-              style={{
-                background: "#fcf8fa",
-                boxShadow: "-8px -8px 16px 0px white, 8px 8px 16px 0px #d1d5db",
-              }}
-            >
-              {/* Stars */}
-              <div className="flex gap-1 pb-6" aria-label="5 out of 5 stars">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={i}
-                    src={imgStar}
-                    alt=""
-                    className="w-[11.667px] h-[11.083px]"
-                  />
-                ))}
+        <div className="mt-11 grid gap-4 md:grid-cols-3">
+          {traditions.map(({ name, region, note }, index) => (
+            <article key={name} className={`rounded-3xl p-6 sm:p-7 ${index === 1 ? "bg-[#eef3ff]" : "bg-[#f6f8fc]"}`}>
+              <div className="flex items-center justify-between">
+                <h3 className="font-display text-3xl font-semibold tracking-tight text-[#101a2c]">{name}</h3>
+                <span className="rounded-full bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.13em] text-slate-500">{region}</span>
               </div>
-
-              {/* Quote */}
-              <div className="pb-8 w-full">
-                <p className="text-[#1b1b1d] text-base italic leading-6">
-                  &ldquo;{quote}&rdquo;
-                </p>
-              </div>
-
-              {/* Author */}
-              <div className="flex items-center gap-6 w-full">
-                <div
-                  className="w-12 h-12 rounded-full overflow-hidden shrink-0 relative"
-                  style={{
-                    boxShadow:
-                      "-6px -6px 12px 0px white, 6px 6px 12px 0px #d1d5db",
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={avatar}
-                    alt={name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[#1b1b1d] text-base leading-6">
-                    {name}
-                  </span>
-                  <span className="text-[#45464d] text-base leading-6">
-                    {role}
-                  </span>
-                </div>
-              </div>
-            </div>
+              <p className="mt-5 text-sm leading-6 text-slate-600">{note}</p>
+            </article>
           ))}
         </div>
       </div>

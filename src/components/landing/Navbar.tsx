@@ -3,122 +3,71 @@
 import Link from "next/link";
 import { useState } from "react";
 
+const links = [
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#stellar", label: "Why Stellar" },
+  { href: "#faq", label: "FAQ" },
+];
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  const links = [
-    { href: "#how-it-works", label: "How it Works" },
-    { href: "#features", label: "Features" },
-    { href: "#testimonials", label: "Community" },
-    { href: "#faq", label: "Help" },
-  ];
-
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 bg-white border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
-              <svg
-                viewBox="0 0 20 20"
-                className="w-4 h-4 text-white fill-white"
-              >
-                <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm.75 4.5v3.75h3.75a.75.75 0 010 1.5h-3.75V15.5a.75.75 0 01-1.5 0v-3.75H5.5a.75.75 0 010-1.5h3.75V6.5a.75.75 0 011.5 0z" />
-              </svg>
-            </div>
-            <span className="font-display font-bold text-xl text-slate-900">
-              Kolo
-            </span>
-          </Link>
+    <header className="absolute inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/70 bg-white/85 px-4 py-3 shadow-sm backdrop-blur-xl sm:px-6">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Kolo home">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#101a2c] text-[#b7ed79]">
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.25" stroke="currentColor" strokeWidth="2.3" />
+              <path d="M12 7.5v9M7.5 12h9" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" />
+            </svg>
+          </span>
+          <span className="font-display text-xl font-bold tracking-tight text-[#101a2c]">Kolo</span>
+          <span className="hidden rounded-full bg-[#edf3ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#4265b4] sm:inline-flex">On Stellar</span>
+        </Link>
 
-          <div className="hidden md:flex items-center gap-1">
-            {links.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-colors"
-            >
-              Get Started
-            </Link>
-          </div>
-
-          <button
-            className="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle navigation"
-            aria-expanded={open}
-          >
-            {open ? (
-              <svg
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              >
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              >
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {open && (
-        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1">
+        <div className="hidden items-center gap-8 md:flex">
           {links.map(({ href, label }) => (
-            <a
-              key={href}
-              href={href}
-              className="block px-3 py-2.5 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
-              onClick={() => setOpen(false)}
-            >
+            <a key={href} href={href} className="text-sm font-medium text-slate-600 transition hover:text-[#101a2c]">
               {label}
             </a>
           ))}
-          <div className="pt-3 border-t border-slate-100 mt-2 flex flex-col gap-2">
-            <Link
-              href="/login"
-              className="block px-3 py-2.5 text-sm font-medium text-slate-700 rounded-lg text-center"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="block px-3 py-2.5 rounded-lg bg-emerald-500 text-white text-sm font-semibold text-center"
-            >
-              Get Started
-            </Link>
-          </div>
+        </div>
+
+        <a
+          href="https://github.com/Stellar-Kolo"
+          target="_blank"
+          rel="noreferrer"
+          className="hidden items-center gap-2 rounded-xl bg-[#101a2c] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1d2b45] md:inline-flex"
+        >
+          Explore the project <span aria-hidden="true">↗</span>
+        </a>
+
+        <button
+          type="button"
+          className="rounded-lg p-2 text-[#101a2c] md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+        >
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            {open ? <path d="m6 6 12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
+      </nav>
+
+      {open && (
+        <div className="mx-auto mt-2 max-w-7xl rounded-2xl border border-slate-200 bg-white p-3 shadow-lg md:hidden">
+          {links.map(({ href, label }) => (
+            <a key={href} href={href} onClick={() => setOpen(false)} className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+              {label}
+            </a>
+          ))}
+          <a href="https://github.com/Stellar-Kolo" target="_blank" rel="noreferrer" className="mt-2 block rounded-xl bg-[#101a2c] px-4 py-3 text-center text-sm font-semibold text-white">
+            Explore the project ↗
+          </a>
         </div>
       )}
-    </nav>
+    </header>
   );
 }
