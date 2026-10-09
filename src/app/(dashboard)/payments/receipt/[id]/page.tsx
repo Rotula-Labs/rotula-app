@@ -26,6 +26,15 @@ interface TxData {
   fullHash: string;
 }
 
+interface HorizonOperation {
+  type: string;
+  amount?: string;
+  starting_balance?: string;
+  to?: string;
+  account?: string;
+  asset_code?: string;
+}
+
 export default function TransactionReceipt({
   params,
 }: {
@@ -35,6 +44,7 @@ export default function TransactionReceipt({
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [txData, setTxData] = useState<TxData | null>(null);
+  const [error, setError] = useState<"not-found" | "network" | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -50,49 +60,51 @@ export default function TransactionReceipt({
         const txRes = await fetch(
           `https://horizon-testnet.stellar.org/transactions/${unwrappedParams.id}`,
         );
-        if (txRes.ok) {
-          const tx = await txRes.json();
-          const opsRes = await fetch(
-            `https://horizon-testnet.stellar.org/transactions/${unwrappedParams.id}/operations`,
-          );
-          const ops = await opsRes.json();
-          const paymentOp = ops._embedded?.records?.find(
-            (op: {
-              type: string;
-              amount?: string;
-              starting_balance?: string;
-              to?: string;
-              account?: string;
-              asset_code?: string;
-            }) => op.type === "payment" || op.type === "create_account",
-          );
 
-          if (active) {
-            setTxData({
-              id: unwrappedParams.id,
-              amount:
-                paymentOp?.amount || paymentOp?.starting_balance || "0.00",
-              currency: paymentOp?.asset_code || "XLM",
-              status: tx.successful ? "Success" : "Failed",
-              date: new Date(tx.created_at).toLocaleString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              }),
-              from: tx.source_account,
-              to: paymentOp?.to || paymentOp?.account || "Unknown",
-              networkFee:
-                (parseInt(tx.fee_charged) / 10000000).toString() + " XLM",
-              network: "Stellar Testnet",
-              fullHash: unwrappedParams.id,
-            });
-          }
+        if (!txRes.ok) {
+          if (active) setError("not-found");
+          return;
+        }
+
+        const tx = await txRes.json();
+        const opsRes = await fetch(
+          `https://horizon-testnet.stellar.org/transactions/${unwrappedParams.id}/operations`,
+        );
+
+        let paymentOp: HorizonOperation | undefined;
+        if (opsRes.ok) {
+          const ops = await opsRes.json();
+          paymentOp = ops._embedded?.records?.find(
+            (op: HorizonOperation) =>
+              op.type === "payment" || op.type === "create_account",
+          );
+        }
+
+        if (active) {
+          setTxData({
+            id: unwrappedParams.id,
+            amount: paymentOp?.amount || paymentOp?.starting_balance || "0.00",
+            currency: paymentOp?.asset_code || "XLM",
+            status: tx.successful ? "Success" : "Failed",
+            date: new Date(tx.created_at).toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            }),
+            from: tx.source_account,
+            to: paymentOp?.to || paymentOp?.account || "Unknown",
+            networkFee:
+              (parseInt(tx.fee_charged) / 10000000).toString() + " XLM",
+            network: "Stellar Testnet",
+            fullHash: unwrappedParams.id,
+          });
         }
       } catch (err) {
         console.error("Failed to load transaction", err);
+        if (active) setError("network");
       } finally {
         if (active) {
           setLoading(false);
@@ -110,26 +122,68 @@ export default function TransactionReceipt({
 
   if (!mounted) return null;
 
-  // Fallback to mock data if the ID is invalid or API fails (e.g. during development testing)
-  const transaction = txData || {
-    id: unwrappedParams.id || "tx_892348923h4k2j",
-    amount: "150.00",
-    currency: "USDC",
-    status: "Success",
-    date: new Date().toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    }),
-    from: "GBX434KV35F52345K2L3M",
-    to: "GABC1234KJ5H234K5J23X1",
-    networkFee: "0.00001 XLM",
-    network: "Stellar Testnet",
-    fullHash: unwrappedParams.id || "f4a8b...19c2",
-  };
+  if (loading) {
+    return (
+      <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
+        <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
+      </div>
+    );
+  }
+
+  // Demo data is only ever shown outside production. A real Horizon response
+  // that failed or returned "not found" must render an explicit error state
+  // rather than a fabricated "Payment Success" receipt.
+  const demoTransaction: TxData | null =
+    process.env.NODE_ENV !== "production"
+      ? {
+          id: unwrappedParams.id || "tx_892348923h4k2j",
+          amount: "150.00",
+          currency: "USDC",
+          status: "Success",
+          date: new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+          from: "GBX434KV35F52345K2L3M",
+          to: "GABC1234KJ5H234K5J23X1",
+          networkFee: "0.00001 XLM",
+          network: "Stellar Testnet",
+          fullHash: unwrappedParams.id || "f4a8b...19c2",
+        }
+      : null;
+
+  const transaction = txData ?? demoTransaction;
+
+  if (!transaction) {
+    const notFound = error === "not-found";
+
+    return (
+      <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 sm:p-12 text-center relative overflow-hidden">
+        <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-rose-100 dark:bg-rose-900/30">
+          <XCircle className="w-10 h-10 text-rose-500" />
+        </div>
+        <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
+          {notFound ? "Transaction not found" : "Unable to load transaction"}
+        </h2>
+        <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-8 max-w-sm">
+          {notFound
+            ? "We couldn't find a transaction with that ID on Stellar Testnet."
+            : "We couldn't reach Stellar Horizon. Check your connection and try again."}
+        </p>
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors group font-medium"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Dashboard
+        </Link>
+      </div>
+    );
+  }
 
   const shortenStr = (str: string) => {
     if (str.length < 12) return str;
@@ -153,14 +207,6 @@ export default function TransactionReceipt({
   const handleDownload = () => {
     window.print();
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
-        <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
