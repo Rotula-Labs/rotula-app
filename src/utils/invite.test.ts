@@ -42,7 +42,7 @@ describe("buildInviteUrl", () => {
   it("falls back to rotula.app when window is unavailable", () => {
     vi.stubGlobal("window", undefined);
     expect(buildInviteUrl("servercode")).toBe(
-      "https://rotula.app/invite/servercode",
+      "https://kolo.app/invite/servercode",
     );
   });
 });
