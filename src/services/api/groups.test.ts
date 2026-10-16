@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { groupsService } from "@/services/api/groups";
 
-const INVITES_KEY = "rotula_invites";
-const MEMBERSHIPS_KEY = "rotula_memberships";
+const INVITES_KEY = "kolo_invites";
+const MEMBERSHIPS_KEY = "kolo_memberships";
 
 function createStorage(): Storage {
   const store = new Map<string, string>();
