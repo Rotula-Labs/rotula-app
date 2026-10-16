@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { groupsService } from "../../../../services/api/groups";
 import type { Group } from "../../../../types/group";
@@ -21,8 +22,12 @@ export default function GroupDetails() {
   useEffect(() => {
     let mounted = true;
     const fetchGroup = async () => {
-      if (!params?.id) {
-        if (mounted) setIsLoading(false);
+      // Reject reserved keywords or missing id to prevent dynamic segment pollution
+      if (!params?.id || params.id === "new") {
+        if (mounted) {
+          setGroup(null);
+          setIsLoading(false);
+        }
         return;
       }
       const fetched = await groupsService.getGroup(params.id);
@@ -103,8 +108,14 @@ export default function GroupDetails() {
 
   if (!group) {
     return (
-      <div className="max-w-6xl mx-auto p-4 md:p-8 bg-[#f4f7f5] min-h-screen flex justify-center items-center">
-        <p className="text-gray-500">Group not found or unavailable.</p>
+      <div className="max-w-6xl mx-auto p-4 md:p-8 bg-[#f4f7f5] min-h-screen flex flex-col justify-center items-center gap-4">
+        <p className="text-gray-500 text-lg font-medium">Group not found or unavailable.</p>
+        <Link
+          href="/groups"
+          className="text-sm font-semibold text-[#047857] hover:text-[#065f46] underline transition-colors"
+        >
+          Return to Groups
+        </Link>
       </div>
     );
   }

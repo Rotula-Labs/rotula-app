@@ -66,7 +66,7 @@ export const Sidebar = () => {
         </div>
         <div className="mt-auto p-6">
           <Link
-            href="/groups/new"
+            href="/groups"
             className="block text-center w-full bg-[#047857] hover:bg-[#065f46] text-white py-3 rounded-xl font-medium transition-colors"
           >
             Start New Goal
