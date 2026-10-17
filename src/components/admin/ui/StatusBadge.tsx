@@ -25,7 +25,8 @@ const NEUTRAL = "bg-slate-50 text-slate-600 ring-slate-500/20";
 
 /** Small pill that colour-codes a status/label string by semantic tone. */
 export function StatusBadge({ status }: { status: string }) {
-  const tone = TONE[status.toLowerCase()] ?? NEUTRAL;
+  const key = status.toLowerCase();
+  const tone = TONE[key] ?? NEUTRAL;
   return (
     <span
       className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize ring-1 ring-inset ${tone}`}

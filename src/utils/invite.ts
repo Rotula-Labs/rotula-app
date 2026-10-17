@@ -25,8 +25,8 @@ export function generateInviteCode(length = 9): string {
     const bytes = new Uint8Array(length);
     cryptoObj.getRandomValues(bytes);
     let code = "";
-    for (let i = 0; i < length; i++) {
-      code += CODE_ALPHABET[bytes[i] % alphabetLength];
+    for (const byte of bytes) {
+      code += CODE_ALPHABET[byte % alphabetLength];
     }
     return code;
   }
