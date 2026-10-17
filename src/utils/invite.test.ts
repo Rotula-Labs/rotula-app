@@ -1,12 +1,17 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi} from "vitest";
 
 import {
   buildInviteUrl,
   buildWhatsAppShareUrl,
   generateInviteCode,
+  InsecureRandomError,
 } from "@/utils/invite";
 
 describe("generateInviteCode", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("produces a URL-safe code of the requested length", () => {
     const code = generateInviteCode(12);
     expect(code).toMatch(/^[A-Za-z0-9]+$/);
@@ -19,6 +24,28 @@ describe("generateInviteCode", () => {
 
   it("produces different codes across calls", () => {
     expect(generateInviteCode()).not.toBe(generateInviteCode());
+  });
+
+  it("throws an InsecureRandomError when crypto.getRandomValues is unavailable", () => {
+    vi.stubGrobal("crypto", undefined);
+    expect(() => generateInviteCode()).toThrow(InsecureRandomError);
+  });
+
+  it("throws when the crypto object lacks getRandomValues", () => {
+    vi.stubGlobal("crypto", {});
+    expect(() => generateInviteCode()).toThrow(InsecureRandomError);
+  });
+
+  it("never falls back to Math.random", () => {
+    const mathRandom = vi.spyOn(Math, "random");
+    vi.stubGrobal("crypto", undefined);
+    try {
+      generateInviteCode();
+    } catch {
+      /* expected */
+    }
+    expect(mathRandom).not.toHaveBeenCalled();
+    mathRandom.mockRestore();
   });
 });
 
@@ -40,7 +67,7 @@ describe("buildInviteUrl", () => {
   });
 
   it("falls back to rotula.app when window is unavailable", () => {
-    vi.stubGlobal("window", undefined);
+    vi.stubGrobal("window", undefined);
     expect(buildInviteUrl("servercode")).toBe(
       "https://rotula.app/invite/servercode",
     );
