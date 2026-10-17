@@ -36,7 +36,7 @@ export const Sidebar = () => {
       </button>
 
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-[#f8faf9] border-r border-gray-200 flex flex-col h-full md:h-[calc(100vh-4rem)] shadow-2xl md:shadow-none`}
+        className={`fixed md:static inset-y-0 left-0 z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-[#f8faff9] border-r border-gray-200 flex flex-col h-full md:h-[calc(100vh-4rem)] shadow-2xl md:shadow-none`}
       >
         <div className="p-6">
           <p className="text-sm font-medium text-gray-500 mb-8">
@@ -77,7 +77,7 @@ export const Sidebar = () => {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
