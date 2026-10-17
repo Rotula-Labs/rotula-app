@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Home, Plane, Plus, ChevronRight } from "lucide-react";
+import { Home, Plane, Plus, ChevronRight, PiggyBank } from "lucide-react";
 import type { SavingsGroup } from "@/hooks/useGroups";
 import { ProgressRing } from "@/components/dashboard/ProgressRing";
 
@@ -60,6 +60,28 @@ export function SavingsCircles({
         </button>
       </div>
 
+      {groups.length === 0 ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center min-h-[220px]"
+        >
+          <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center mb-4">
+            <PiggyBank className="w-7 h-7 text-emerald-600" aria-hidden="true" />
+          </div>
+          <h4 className="text-lg font-bold text-gray-900 mb-1">
+            No savings circles yet
+          </h4>
+          <p className="text-sm text-gray-500 max-w-sm mb-5">
+            You haven&apos;t joined or created any savings circles. Start your
+            first one to begin saving together.
+          </p>
+          <button className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
+            <Plus className="w-4 h-4" aria-hidden="true" />
+            Create your first circle
+          </button>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {groups.map((group) => {
           const progress = Math.min((group.saved / group.target) * 100, 100);
@@ -148,6 +170,7 @@ export function SavingsCircles({
           </p>
         </button>
       </div>
+      )}
     </div>
   );
 }
