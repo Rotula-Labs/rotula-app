@@ -114,7 +114,14 @@ npm run build
 
 ## Environment Variables Reference
 
-The app currently reads only `NODE_ENV` (used to set the production cookie flag). No `NEXT_PUBLIC_*` values are required yet, because the dashboard is still a prototype backed by sample data and route-handler stubs. When wallet, balance, and payment flows are wired to `rotula-api`, their public configuration belongs here as `NEXT_PUBLIC_*` values, which ship to the browser and must never contain a secret.
+Environment variables are read, validated, and exported through a single configuration module (`src/lib/config`). Validation runs at build time, so a missing or malformed required variable fails `npm run build` with a message naming the variable instead of surfacing as `undefined` at a call site.
+
+The module keeps the public/server-only split explicit:
+
+- **Public variables** (`NEXT_PUBLIC_*`) are exported from the public config and are safe to import in client code. They ship to the browser bundle and must never contain a secret.
+- **Server-only variables** are exported from a separate server config that must only be imported in server code (route handlers, server components, server actions). They are not reachable from client code through the module.
+
+Each variable is documented in the committed example file (`.env.example`). Copy it to `.env.local` and fill in the values before running the app. No `NEXT_PUBLIC_*` values are required yet, because the dashboard is still a prototype backed by sample data and route-handler stubs; when wallet, balance, and payment flows are wired to `rotula-api`, their public configuration is added to the module and the example file.
 
 ## Project map
 

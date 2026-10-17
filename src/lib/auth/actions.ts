@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { serverConfig } from "@/lib/config/server";
+
 import { SESSION_COOKIE } from "./constants";
 import { DEMO_ADMIN_ID, DEMO_MEMBER_ID } from "./mock-users";
 
@@ -18,7 +20,7 @@ async function setSession(userId: string): Promise<void> {
   const store = await cookies();
   store.set(SESSION_COOKIE, userId, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: serverConfig.isProduction,
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
