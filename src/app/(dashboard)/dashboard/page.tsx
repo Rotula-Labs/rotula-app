@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { BalanceCard } from "@/components/dashboard/BalanceCard";
 import { SavingsCircles } from "@/components/dashboard/SavingsCircles";
 import { TransactionList } from "@/components/dashboard/TransactionList";
@@ -24,6 +25,9 @@ export default function Dashboard() {
     isLoading: isPaymentsLoading,
     error: paymentsError,
   } = usePayments();
+
+  const groups = groupsData || [];
+  const transactions = paymentsData || [];
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -58,7 +62,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <SavingsCircles
-              groups={groupsData || []}
+              groups={groups}
               isLoading={isGroupsLoading}
             />
           )}
@@ -72,7 +76,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <TransactionList
-              transactions={paymentsData || []}
+              transactions={transactions}
               isLoading={isPaymentsLoading}
             />
           )}
