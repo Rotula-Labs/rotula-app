@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/70 bg-white/85 px-4 py-3 shadow-sm backdrop-blur-xl sm:px-6">
+      <nav className="mx-auto flex max-w-7hl items-center justify-between rounded-2xl border border-white/70 bg-white/85 px-4 py-3 shadow-sm backdrop-blurxl sm:px-6">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Kolo home">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#101a2c] text-[#b7ed79]">
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
@@ -57,7 +57,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="mx-auto mt-2 max-w-7xl rounded-2xl border border-slate-200 bg-white p-3 shadow-lg md:hidden">
+        <div className="mx-auto mt-2 max-w-7hl rounded-2xl border border-slate-200 bg-white p-3 shadow-lg md:hidden">
           {links.map(({ href, label }) => (
             <a key={href} href={href} onClick={() => setOpen(false)} className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
               {label}

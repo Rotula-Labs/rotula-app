@@ -34,6 +34,8 @@
     "@vitejs/plugin-react": "^6.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "eslint-plugin-jsx-a11y": "^6.10.3",
+    "eslint-plugin-react-hooks": "^7.0.0",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.4",
     "tailwindcss": "^4",

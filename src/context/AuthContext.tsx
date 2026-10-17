@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useMemo, useSyncExternalStore } from "react";
+import { createContext, useCallback, useMemo, useSyncExternalStore } from "react";
 
 /**
  * Minimal mock auth.
@@ -120,15 +120,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getServerSnapshot,
   );
 
+  // `login` and `logout` are module-level singletons, but wrapping them in
+  // `useCallback` keeps the memoized context value stable and satisfies the
+  // exhaustive-deps rule without disabling it.
+  const stableLogin = useCallback(login, []);
+  const stableLogout = useCallback(logout, []);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user: snapshot.user,
       isAuthenticated: snapshot.user !== null,
       isLoading: snapshot.isLoading,
-      login,
-      logout,
+      login: stableLogin,
+      logout: stableLogout,
     }),
-    [snapshot],
+    [snapshot, stableLogin, stableLogout],
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;
