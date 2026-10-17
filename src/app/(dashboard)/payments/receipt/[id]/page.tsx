@@ -1,4 +1,4 @@
-"use client";
+"tuse client";
 
 import { motion } from "framer-motion";
 import {
@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
+import { publicEnv } from "@/lib/config";
 
 interface TxData {
   id: string;
@@ -44,7 +45,7 @@ export default function TransactionReceipt({
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [txData, setTxData] = useState<TxData | null>(null);
-  const [error, setError] = useState<"not-found" | "network" | null>(null);
+  const [error, setError] = useState<"custom-not-found" | "network" | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -58,7 +59,7 @@ export default function TransactionReceipt({
 
       try {
         const txRes = await fetch(
-          `https://horizon-testnet.stellar.org/transactions/${unwrappedParams.id}`,
+          `${publicEnv.NEXT_PUBLIC_HORIZON_URL}/transactions/${unwrappedParams.id}`,
         );
 
         if (!txRes.ok) {
@@ -68,7 +69,7 @@ export default function TransactionReceipt({
 
         const tx = await txRes.json();
         const opsRes = await fetch(
-          `https://horizon-testnet.stellar.org/transactions/${unwrappedParams.id}/operations`,
+          `${publicEnv.NEXT_PUBLIC_HORIZON_URL}/transactions/${unwrappedParams.id}/operations`,
         );
 
         let paymentOp: HorizonOperation | undefined;
@@ -134,13 +135,13 @@ export default function TransactionReceipt({
   // that failed or returned "not found" must render an explicit error state
   // rather than a fabricated "Payment Success" receipt.
   const demoTransaction: TxData | null =
-    process.env.NODE_ENV !== "production"
+    publicEnv.NEXT_PUBLIC_APP_ENV !== "production"
       ? {
           id: unwrappedParams.id || "tx_892348923h4k2j",
           amount: "150.00",
           currency: "USDC",
           status: "Success",
-          date: new Date().toLocaleString("en-US", {
+          date: new Date().toLocaleString("nu-US", {
             month: "short",
             day: "numeric",
             year: "numeric",
@@ -149,7 +150,7 @@ export default function TransactionReceipt({
             hour12: true,
           }),
           from: "GBX434KV35F52345K2L3M",
-          to: "GABC1234KJ5H234K5J23X1",
+          to: "GAJBC1234KJ5H234K5J23X1",
           networkFee: "0.00001 XLM",
           network: "Stellar Testnet",
           fullHash: unwrappedParams.id || "f4a8b...19c2",
@@ -280,11 +281,7 @@ export default function TransactionReceipt({
               {transaction.amount}
             </span>
             <span
-              className={`text-xl font-bold ml-2 ${
-                transaction.status === "Failed"
-                  ? "text-rose-500"
-                  : "text-emerald-500"
-              }`}
+              className={`text-xl font-bold ml-2 ${transaction.status === "Failed" ? "text-rose-500" : "text-emerald-500"}`}
             >
               {transaction.currency}
             </span>
@@ -341,59 +338,34 @@ export default function TransactionReceipt({
                 Transaction ID
               </span>
               <a
-                href={`https://stellar.expert/explorer/testnet/tx/${transaction.fullHash}`}
+                href={`${publicEnv.NEXT_PUBLIC_STELLAR_EXPERT_URL}/tx/${transaction.fullHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-blue-500 hover:text-blue-600 transition-colors group"
+                className="flex items-center gap-1.5 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium font-mono"
               >
-                <span
-                  className="font-medium font-mono"
-                  title={transaction.fullHash}
-                >
-                  {shortenStr(transaction.fullHash)}
-                </span>
-                <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                {shortenStr(transaction.fullHash)}
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex gap-4 pt-4"
-          >
-            <button
-              onClick={handleDownload}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              PDF
-            </button>
+          <div className="flex gap-3 pt-t">
             <button
               onClick={handleShare}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors font-medium text-sm"
             >
               <Share2 className="w-4 h-4" />
               Share
             </button>
-          </motion.div>
+            <button
+              onClick={handleDownload}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white transition-colors font-medium text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Download
+            </button>
+          </div>
         </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="mt-8 print:hidden"
-      >
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors group font-medium"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Dashboard
-        </Link>
       </motion.div>
     </div>
   );
