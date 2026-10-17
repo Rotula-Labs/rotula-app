@@ -5,6 +5,18 @@ import { Home, Plane, Plus, ChevronRight } from "lucide-react";
 import type { SavingsGroup } from "@/hooks/useGroups";
 import { ProgressRing } from "@/components/dashboard/ProgressRing";
 
+const DEFAULT_GROUP_ICON = Home;
+
+const GROUP_ICON_BY_KIND: Record<string, typeof Home> = {
+  home: Home,
+  travel: Plane,
+};
+
+export function getGroupIcon(tag: string): typeof Home {
+  const kind = tag.trim().toLowerCase();
+  return GROUP_ICON_BY_KIND[kind] ?? DEFAULT_GROUP_ICON;
+}
+
 interface SavingsCirclesProps {
   groups: SavingsGroup[];
   isLoading?: boolean;
@@ -64,14 +76,7 @@ export function SavingsCircles({
         {groups.map((group) => {
           const progress = Math.min((group.saved / group.target) * 100, 100);
 
-          // Helper to get icon based on tag
-          const getIcon = () => {
-            if (group.tag.includes("HOME"))
-              return <Home className="w-5 h-5 text-emerald-700" />;
-            if (group.tag.includes("TRAVEL"))
-              return <Plane className="w-5 h-5 text-emerald-700" />;
-            return <Home className="w-5 h-5 text-emerald-700" />;
-          };
+          const Icon = getGroupIcon(group.tag);
 
           return (
             <div
@@ -80,7 +85,7 @@ export function SavingsCircles({
             >
               <div className="flex justify-between items-center w-full">
                 <div className="w-9 h-9 rounded-full bg-emerald-50 flex items-center justify-center">
-                  {getIcon()}
+                  <Icon className="w-5 h-5 text-emerald-700" />
                 </div>
                 <span className="text-[10px] font-bold tracking-wider text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full uppercase">
                   {group.tag}
