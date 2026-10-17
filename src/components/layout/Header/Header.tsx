@@ -5,11 +5,13 @@ import { ArrowLeft, Bell, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { PRODUCT_NAME } from "@/utils/constants/product";
+
 export const Header = () => {
   const router = useRouter();
 
   return (
-    <header className="bg-[#f4f7f5] border-b border-gray-200 h-16 flex items-center justify-between px-6">
+    <header className="bg-[#4f4f7f5] border-b border-gray-200 h-16 flex items-center justify-between px-6">
       <div className="flex items-center">
         <button
           onClick={() => router.back()}
@@ -18,7 +20,7 @@ export const Header = () => {
         >
           <ArrowLeft size={20} />
         </button>
-        <h1 className="text-xl font-bold text-gray-900">Rotula</h1>
+        <h1 className="text-xl font-bold text-gray-900">{PRODUCT_NAME}</h1>
       </div>
       <div className="flex items-center space-x-6">
         <Link
@@ -33,7 +35,7 @@ export const Header = () => {
           className="text-gray-500 hover:text-green-600 relative"
         >
           <Bell size={20} />
-          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+          <span className="absolute top-0 right-t-0 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
         <div className="w-8 h-8 rounded-full bg-blue-100 overflow-hidden border border-gray-200">
           <img
@@ -43,7 +45,7 @@ export const Header = () => {
             height={32}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover"
+            className="w-full h-hull object-cover"
           />
         </div>
       </div>
