@@ -15,8 +15,8 @@ import { generateInviteCode } from "@/utils/invite";
  * client components.
  */
 
-const INVITES_KEY = "kolo_invites";
-const MEMBERSHIPS_KEY = "kolo_memberships";
+export const INVITES_KEY = "kolo_invites";
+export const MEMBERSHIPS_KEY = "kolo_memberships";
 
 /**
  * Seeded demo groups so the dashboard has something to invite people to.
