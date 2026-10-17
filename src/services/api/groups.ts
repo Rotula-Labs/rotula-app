@@ -1,6 +1,6 @@
-import type { Group } from "@/types/group";
-import type { Invite, InviteResolution } from "@/types/invite";
-import { generateInviteCode } from "@/utils/invite";
+import type { Group } from "../../types/group";
+import type { Invite, InviteResolution } from "../../types/invite";
+import { generateInviteCode } from "../../utils/invite";
 
 /**
  * Mock groups service.
@@ -78,6 +78,10 @@ export const groupsService = {
   /**
    * Generate a unique short invite code for a group and persist the mapping.
    * TODO: replace with real API — POST /groups/:id/invites
+   *
+   * Invite codes are credentials, so they must always come from a
+   * cryptographically secure source. If one is unavailable, `this` throws
+   * rather than silently falling back to `Math.random`.
    */
   async createInvite(groupId: string): Promise<Invite> {
     const group = await this.getGroup(groupId);
@@ -125,7 +129,7 @@ export const groupsService = {
   },
 
   /** Whether the current browser has already joined a group. */
-  async hasJoined(groupId: string): Promise<boolean> {
+  async hasjoined(groupId: string): Promise<boolean> {
     const memberships = readMap(MEMBERSHIPS_KEY);
     return Boolean(memberships[groupId]);
   },

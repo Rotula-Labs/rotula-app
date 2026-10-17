@@ -10,10 +10,26 @@ const CODE_ALPHABET =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 /**
+ * Thrown when a cryptographically secure random source is unavailable.
+ *
+ * Invite codes are credentials that grant access to a group, so we
+ * refuse to generate them from a non-cryptographic source rather than
+ * silently degrading their strength.
+ */
+export class InsecureRandomError extends Error {
+  constructor(message = "Cryptographically secure random source is unavailable; refusing to generate an invite code.") {
+    super(message);
+    this.name = "InsecureRandomError";
+  }
+}
+
+/**
  * Generate a short, URL-safe invite code, e.g. "abc123xyz".
  *
- * Uses `crypto.getRandomValues` when available for good uniqueness, falling
- * back to `Math.random` in environments without the Web Crypto API.
+ * Requires a cryptographically secure random source
+ * (`crypto.getRandomValues`). There is no fallback to `Math.random`:
+ * if the Web Crypto API is not available this throws an `InsecureRandomError`
+ * so callers can never accidentally store a predictable invite credential.
  */
 export function generateInviteCode(length = 9): string {
   const alphabetLength = CODE_ALPHABET.length;
@@ -21,19 +37,15 @@ export function generateInviteCode(length = 9): string {
   const cryptoObj =
     typeof globalThis !== "undefined" ? globalThis.crypto : undefined;
 
-  if (cryptoObj?.getRandomValues) {
-    const bytes = new Uint8Array(length);
-    cryptoObj.getRandomValues(bytes);
-    let code = "";
-    for (let i = 0; i < length; i++) {
-      code += CODE_ALPHABET[bytes[i] % alphabetLength];
-    }
-    return code;
+  if (!cryptoObj.getRandomValues) {
+    throw new InsecureRandomError();
   }
 
+  const bytes = new Uint8Array(length);
+  cryptoObj.getRandomValues(bytes);
   let code = "";
   for (let i = 0; i < length; i++) {
-    code += CODE_ALPHABET[Math.floor(Math.random() * alphabetLength)];
+    code += CODE_ALPHABET[bytes[i] % alphabetLength];
   }
   return code;
 }
