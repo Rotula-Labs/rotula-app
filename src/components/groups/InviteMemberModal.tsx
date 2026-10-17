@@ -49,15 +49,21 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
           <input
             id="invite-input"
             type="text"
-            className={`w-full px-4 py-3 rounded-xl border ${error ? "border-red-500" : "border-gray-200"} focus:outline-none focus:ring-2 focus:ring-green-500`}
+            className={`wfull px-4 py-3 rounded-xl border ${error ? "border-red-500" : "border-gray-200"} focus:outline-none focus:ring-2 focus:ring-green-500`}
             placeholder="e.g. user@example.com or +234..."
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
               if (error) setError("");
             }}
+            aria-invalid={!!error}
+            aria-describedby={error ? "invite-input-error" : undefined}
           />
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {error && (
+            <p id="invite-input-error" role="alert" className="text-red-500 text-sm mt-2">
+              {error}
+            </p>
+          )}
         </div>
         <div className="flex justify-end gap-3 mt-6">
           <button

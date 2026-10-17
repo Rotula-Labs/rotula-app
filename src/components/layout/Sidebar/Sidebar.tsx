@@ -17,13 +17,13 @@ export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const navItems = [
+  const navItems = React.useMemo(() => [
     { name: "Home", icon: Home, href: "/dashboard" },
     { name: "Savings", icon: PiggyBank, href: "/savings" },
     { name: "Groups", icon: Users, href: "/groups" },
     { name: "Payments", icon: CreditCard, href: "/payments" },
     { name: "Settings", icon: Settings, href: "/profile" },
-  ];
+  ], []);
 
   return (
     <>
@@ -79,6 +79,7 @@ export const Sidebar = () => {
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
     </>

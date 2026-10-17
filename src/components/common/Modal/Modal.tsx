@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X } from "lucide-react";
 
 interface ModalProps {
@@ -14,14 +14,37 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   children,
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
-      <div className="bg-white rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-xl transform transition-all">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition-opacity"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        className="bg-white rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-xl transform transition-all"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-between items-center p-5 border-b border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 id="modal-title" className="text-xl font-bold text-gray-900">
+            {title}
+          </h3>
           <button
+            type="button"
             onClick={onClose}
             aria-label="Close modal"
             className="text-gray-400 hover:text-gray-600 transition-colors rounded-full p-1 hover:bg-gray-100"
