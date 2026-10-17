@@ -16,6 +16,28 @@ export interface Member {
   avatarUrl?: string;
 }
 
+const STATUS_LABELS: Record<MemberStatus, string> = {
+  CONTRIBUTED: "Contributed",
+  WAITING: "Waiting",
+  PENDING: "Pending",
+  PAYOUT_RECEIVED: "Payout received",
+  LATE: "Late",
+};
+
+const UNKNOWN_STATUS_LABEL = "Unknown";
+
+const getStatusLabel = (status: MemberStatus): string =>
+  STATUS_LABELS[status] ?? UNKNOWN_STATUS_LABEL;
+
+const ROLE_LABELS: Record<string, string> = {
+  ADMIN: "Admin",
+  OWNER: "Owner",
+  MEMBER: "Member",
+};
+
+const getRoleLabel = (role: string): string =>
+  ROLE_LABELS[role] ?? role;
+
 interface MembersListProps {
   members: Member[];
   onInvite: () => void;
@@ -80,7 +102,7 @@ export const MembersList: React.FC<MembersListProps> = ({
                   {member.name}
                 </p>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest">
-                  {member.role}
+                  {getRoleLabel(member.role)}
                 </p>
               </div>
             </div>
@@ -88,7 +110,7 @@ export const MembersList: React.FC<MembersListProps> = ({
               <span
                 className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${getStatusStyle(member.status)}`}
               >
-                {member.status}
+                {getStatusLabel(member.status)}
               </span>
             </div>
           </div>
