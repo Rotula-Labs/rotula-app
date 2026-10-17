@@ -1,6 +1,6 @@
 import type { Group } from "@/types/group";
 import type { Invite, InviteResolution } from "@/types/invite";
-import { generateInviteCode } from "@/utils/invite";
+import { generateInviteCode, normaliseInviteCode } from "@/utils/invite";
 
 /**
  * Mock groups service.
@@ -11,7 +11,7 @@ import { generateInviteCode } from "@/utils/invite";
  * later is a drop-in change at the `// TODO: replace with real API` seams.
  *
  * Because it relies on `localStorage`, every method is guarded for
- * server-side / no-`window` environments and should only be awaited from
+ * server-side / no-'window' environments and should only be awaited from
  * client components.
  */
 
@@ -87,10 +87,11 @@ export const groupsService = {
 
     const invites = readMap(INVITES_KEY);
 
-    let code = generateInviteCode();
+    // Always store the canonical (lowercase) code so lookups are case-safe.
+    let code = normaliseInviteCode(generateInviteCode());
     // Avoid the (astronomically unlikely) collision with an existing code.
     while (invites[code]) {
-      code = generateInviteCode();
+      code = normaliseInviteCode(generateInviteCode());
     }
 
     invites[code] = groupId;
@@ -105,13 +106,14 @@ export const groupsService = {
    */
   async getInvite(code: string): Promise<InviteResolution | null> {
     const invites = readMap(INVITES_KEY);
-    const groupId = invites[code];
+    const normalised = normaliseInviteCode(code);
+    const groupId = invites[normalised];
     if (!groupId) return null;
 
     const group = await this.getGroup(groupId);
     if (!group) return null;
 
-    return { code, group };
+    return { code: normalised, group };
   },
 
   /**

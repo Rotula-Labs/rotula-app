@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { groupsService } from "@/services/api/groups";
 
-const INVITES_KEY = "rotula_invites";
-const MEMBERSHIPS_KEY = "rotula_memberships";
+const INVITES_KEY = "kolo_invites";
+const MEMBERSHIPS_KEY = "kolo_memberships";
 
 function createStorage(): Storage {
   const store = new Map<string, string>();
@@ -37,12 +37,12 @@ beforeEach(() => {
 });
 
 describe("groupsService.listGroups / getGroup", () => {
-  it("returns the seeded groups", async () => {
+  it("returns the seeded groups", () => {
     const groups = await groupsService.listGroups();
     expect(groups.map((group) => group.id)).toEqual(["g1", "g2"]);
   });
 
-  it("resolves a group by id and returns null when missing", async () => {
+  it("resolves a group by id and returns null when missing", () => {
     await expect(groupsService.getGroup("g1")).resolves.toMatchObject({
       id: "g1",
       name: "Lagos Savers Circle",
@@ -52,7 +52,7 @@ describe("groupsService.listGroups / getGroup", () => {
 });
 
 describe("groupsService.createInvite / getInvite", () => {
-  it("persists a new invite under rotula_invites and round-trips it", async () => {
+  it("persists a new invite under kolo_invites and round-trips it", () => {
     const invite = await groupsService.createInvite("g1");
 
     const stored = JSON.parse(
@@ -66,24 +66,39 @@ describe("groupsService.createInvite / getInvite", () => {
     });
   });
 
-  it("rejects an invite for an unknown group", async () => {
+  it("stores invite codes in canonical lowercase", () => {
+    const invite = await groupsService.createInvite("g1");
+    expect(invite.code).toBe(invite.code.toLowerCase());
+  });
+
+  it("resolves a code entered with the wrong case", () => {
+    const invite = await groupsService.createInvite("g2");
+    const uppercased = invite.code.toUpperCase();
+
+    await expect(groupsService.getInvite(uppercased)).resolves.toMatchObject({
+      code: invite.code,
+      group: { id: "g2" },
+    });
+  });
+
+  it("rejects an invite for an unknown group", () => {
     await expect(groupsService.createInvite("missing")).rejects.toThrow(
       "Unknown group: missing",
     );
   });
 
-  it("returns null for an unknown invite code", async () => {
+  it("returns null for an unknown invite code", () => {
     await expect(groupsService.getInvite("does-not-exist")).resolves.toBeNull();
   });
 
-  it("treats malformed JSON under rotula_invites as empty", async () => {
+  it("treats malformed JSON under kolo_invites as empty", () => {
     window.localStorage.setItem(INVITES_KEY, "{not valid json");
     await expect(groupsService.getInvite("anything")).resolves.toBeNull();
   });
 });
 
 describe("groupsService.joinGroup / hasJoined", () => {
-  it("records membership under rotula_memberships", async () => {
+  it("records membership under kolo_memberships", () => {
     await expect(groupsService.hasJoined("g1")).resolves.toBe(false);
 
     await groupsService.joinGroup("g1");
@@ -95,7 +110,7 @@ describe("groupsService.joinGroup / hasJoined", () => {
     expect(stored.g1).toBeTruthy();
   });
 
-  it("treats malformed JSON under rotula_memberships as empty", async () => {
+  it("treats malformed JSON under kolo_memberships as empty", () => {
     window.localStorage.setItem(MEMBERSHIPS_KEY, "not json either");
     await expect(groupsService.hasJoined("g1")).resolves.toBe(false);
   });

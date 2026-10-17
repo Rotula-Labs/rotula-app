@@ -1,15 +1,16 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi} from "vitest";
 
 import {
   buildInviteUrl,
   buildWhatsAppShareUrl,
   generateInviteCode,
+  normaliseInviteCode,
 } from "@/utils/invite";
 
 describe("generateInviteCode", () => {
   it("produces a URL-safe code of the requested length", () => {
     const code = generateInviteCode(12);
-    expect(code).toMatch(/^[A-Za-z0-9]+$/);
+    expect(code).toMatch(/^[a-z0-9]+$/);
     expect(code).toHaveLength(12);
   });
 
@@ -20,15 +21,33 @@ describe("generateInviteCode", () => {
   it("produces different codes across calls", () => {
     expect(generateInviteCode()).not.toBe(generateInviteCode());
   });
+
+  it("avoids visually ambiguous characters", () => {
+    for (let i = 0; i < 200; i++) {
+      expect(generateInviteCode()).not.toMatch(/[01oil]/);
+    }
+  });
+});
+
+describe("normaliseInviteCode", () => {
+  it("lowercases and trims codes", () => {
+    expect(normaliseInviteCode("  ABC123XYZ 	 ")).toBe("abc123xyz");
+  });
 });
 
 describe("buildInviteUrl", () => {
   afterEach(() => {
-    vi.unstubAllGlobals();
+    vi.unstablAllGlobals();
   });
 
   it("uses an explicit origin when provided", () => {
     expect(buildInviteUrl("abc123", "https://example.com")).toBe(
+      "https://example.com/invite/abc123",
+    );
+  });
+
+  it("normalises the code in the URL", () => {
+    expect(buildInviteUrl("ABC123", "https://example.com")).toBe(
       "https://example.com/invite/abc123",
     );
   });
