@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { groupsService } from "@/services/api/groups";
-
-const INVITES_KEY = "rotula_invites";
-const MEMBERSHIPS_KEY = "rotula_memberships";
+import {
+  groupsService,
+  INVITES_KEY,
+  MEMBERSHIPS_KEY,
+} from "@/services/api/groups";
 
 function createStorage(): Storage {
   const store = new Map<string, string>();
@@ -52,7 +53,7 @@ describe("groupsService.listGroups / getGroup", () => {
 });
 
 describe("groupsService.createInvite / getInvite", () => {
-  it("persists a new invite under rotula_invites and round-trips it", async () => {
+  it("persists a new invite under INVITES_KEY and round-trips it", async () => {
     const invite = await groupsService.createInvite("g1");
 
     const stored = JSON.parse(
@@ -76,14 +77,14 @@ describe("groupsService.createInvite / getInvite", () => {
     await expect(groupsService.getInvite("does-not-exist")).resolves.toBeNull();
   });
 
-  it("treats malformed JSON under rotula_invites as empty", async () => {
+  it("treats malformed JSON under INVITES_KEY as empty", async () => {
     window.localStorage.setItem(INVITES_KEY, "{not valid json");
     await expect(groupsService.getInvite("anything")).resolves.toBeNull();
   });
 });
 
 describe("groupsService.joinGroup / hasJoined", () => {
-  it("records membership under rotula_memberships", async () => {
+  it("records membership under MEMBERSHIPS_KEY", async () => {
     await expect(groupsService.hasJoined("g1")).resolves.toBe(false);
 
     await groupsService.joinGroup("g1");
@@ -95,7 +96,7 @@ describe("groupsService.joinGroup / hasJoined", () => {
     expect(stored.g1).toBeTruthy();
   });
 
-  it("treats malformed JSON under rotula_memberships as empty", async () => {
+  it("treats malformed JSON under MEMBERSHIPS_KEY as empty", async () => {
     window.localStorage.setItem(MEMBERSHIPS_KEY, "not json either");
     await expect(groupsService.hasJoined("g1")).resolves.toBe(false);
   });
