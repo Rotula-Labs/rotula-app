@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import {
   Home,
-  PiggyBank,
   Users,
   CreditCard,
   Settings,
@@ -19,7 +18,6 @@ export const Sidebar = () => {
 
   const navItems = [
     { name: "Home", icon: Home, href: "/dashboard" },
-    { name: "Savings", icon: PiggyBank, href: "/savings" },
     { name: "Groups", icon: Users, href: "/groups" },
     { name: "Payments", icon: CreditCard, href: "/payments" },
     { name: "Settings", icon: Settings, href: "/profile" },
