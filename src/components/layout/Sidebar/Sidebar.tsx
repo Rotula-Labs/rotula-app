@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Home,
   PiggyBank,
@@ -16,6 +16,20 @@ import { usePathname } from "next/navigation";
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const navItems = [
     { name: "Home", icon: Home, href: "/dashboard" },
@@ -28,14 +42,19 @@ export const Sidebar = () => {
   return (
     <>
       <button
+        ref={toggleRef}
         className="md:hidden fixed bottom-6 right-6 z-50 bg-[#047857] text-white p-3 rounded-full shadow-xl"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle navigation"
+        aria-expanded={isOpen}
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
       <aside
+        ref={drawerRef}
+        aria-hidden={!isOpen}
+        inert={!isOpen ? true : undefined}
         className={`fixed md:static inset-y-0 left-0 z-40 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-[#f8faf9] border-r border-gray-200 flex flex-col h-full md:h-[calc(100vh-4rem)] shadow-2xl md:shadow-none`}
       >
         <div className="p-6">
@@ -76,9 +95,11 @@ export const Sidebar = () => {
 
       {/* Mobile overlay */}
       {isOpen && (
-        <div
+        <button
+          type="button"
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsOpen(false)}
+          aria-label="Close navigation"
         />
       )}
     </>
